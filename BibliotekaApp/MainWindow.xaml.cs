@@ -36,8 +36,10 @@ namespace BibliotekaApp
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             App.Frame = mainFrame;
-            titlePageLabel.DataContext = App.Frame; 
+            titlePageLabel.DataContext = App.Frame;
             App.Frame.Navigate(new Pages.NavigationPage());
+
+
         }
 
         private void btnBack_Click(object sender, RoutedEventArgs e)
