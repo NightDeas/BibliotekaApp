@@ -17,7 +17,7 @@
             <StackPanel Orientation="Vertical">
                 <Grid Height="30">
                     <TextBox VerticalContentAlignment="Center" TextChanged="TextBox_TextChanged"></TextBox>
-                    <Label Foreground="Gray" IsHitTestVisible="False" Content="{Binding Hint}" Visibility="{Binding IsVisibleHint, Converter={StaticResource converter}, UpdateSourceTrigger=PropertyChanged}"></Label>
+                    <Label Foreground="Gray" IsHitTestVisible="False" Content="{Binding Hint}" Visibility="{Binding IsVisibleHint, Converter={StaticResource converter}, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"></Label>
                 </Grid>
             </StackPanel>
         </Grid>

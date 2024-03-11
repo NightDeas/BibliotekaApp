@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace BibliotekaApp
 {
@@ -27,5 +28,21 @@ namespace BibliotekaApp
                 }
             }
         };
+
+      
+
+        private void Application_Startup(object sender, StartupEventArgs e)
+        {
+            DispatcherUnhandledException += App_DispatcherUnhandledException;
+            MainWindow = new MainWindow();
+            MainWindow.ShowDialog();
+            
+        }
+
+        private void App_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
+        {
+            e.Handled = true;
+            MessageBox.Show(e.Exception.ToString());
+        }
     }
 }
