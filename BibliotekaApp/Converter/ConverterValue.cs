@@ -31,8 +31,16 @@ namespace BibliotekaApp.Converter
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             Trace.WriteLine($"Конвертация данных - ConvertBack: Значение {value}");
-            Trace.WriteLine($"Вернуть null");
-            return null;
+            if (Visibility.Visible == (Visibility)value)
+            {
+                Trace.WriteLine($"Вернуть Visibility.Collapsed");
+                return Visibility.Collapsed;
+            }
+            else
+            {
+                Trace.WriteLine($"Вернуть Visibility.Visible");
+                return Visibility.Visible;
+            }
         }
     }
 }
