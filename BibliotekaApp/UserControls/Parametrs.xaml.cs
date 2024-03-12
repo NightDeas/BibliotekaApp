@@ -24,6 +24,7 @@ namespace BibliotekaApp.UserControls
     public partial class Parametrs : UserControl, INotifyPropertyChanged
     {
         public string Parametr { get; set; }    
+        public string TitleParametr { get; set; }
         public object Value { get; set; }
         public bool isHasComboBox { get;set; }
         public string Hint { get; set; }
@@ -48,6 +49,17 @@ namespace BibliotekaApp.UserControls
         {
             InitializeComponent();
             DataContext = this;
+            resultCb.IsEnabled = false; 
+            ErrorInComboBoxLabel.Visibility = Visibility.Visible;
+        }
+
+        public Parametrs(Info info) : this()
+        {
+            Parametr = info.Parametr;
+            TitleParametr = info.TitleParametr;
+            Value = info.Value;
+            this.isHasComboBox = info.IsHasComboBox;
+            Hint = info.Hint;
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;

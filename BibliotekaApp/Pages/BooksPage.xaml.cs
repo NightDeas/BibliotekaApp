@@ -48,42 +48,44 @@ namespace BibliotekaApp.Pages
             var book = dataGrid.SelectedItem as Book;
             if (book is null)
                 return;
-
+            Info info = new Info();
             var keyValuePairs = App.list.FirstOrDefault(x => x.Key == "Book");
             foreach (var item in keyValuePairs.Value)
             {
-                string parametr = "";
-                string value = "";
+                info.Parametr = item.Key;
+                info.TitleParametr = item.Value;
                 switch (item.Key)
                 {
                     case "Name":
-                        value = book.Name;
+                        info.Value = book.Name;
+                        info.IsHasComboBox = false;
                         break;
                     case "Author.FullName":
-                        value = book.Author.FullName;
+                        info.Value = book.Author.FullName;
+                        info.IsHasComboBox = true; 
+                        info.Hint = "Введите ФИО автора";
                         break;
                     case "Publisher.Name":
-                        value = book.Publisher.Name;
+                        info.Value = book.Publisher.Name;
+                        info.IsHasComboBox = true;
+                        info.Hint = "Введите название издательства";
                         break;
                     case "Genre.Name":
-                        value = book.Genre.Name;
+                        info.Value = book.Publisher.Name;
+                        info.IsHasComboBox = true;
+                        info.Hint = "Введите жанр";
                         break;
                     case "YearOfPublication":
-                        value = book.YearOfPublication.ToString();
+                        info.Value = book.YearOfPublication.ToString();
+                        info.IsHasComboBox = false;
                         break;
                     default:
                         Trace.WriteLine($"Не найден параметр в словаре: {item.Key}");
                         continue;
                 }
-                parametr = item.Value;
-                if (string.IsNullOrEmpty(parametr) || string.IsNullOrEmpty(value))
+                if (string.IsNullOrEmpty(info.Parametr) || string.IsNullOrEmpty(info.Value))
                     return;
-                listParametrsStackPanel.Children.Add(new UserControls.Parametrs()
-                {
-                    Parametr = parametr,
-                    Value = value,
-                    Hint = "Введите текст для поиска"
-                });
+                listParametrsStackPanel.Children.Add(new UserControls.Parametrs(info));
             }
             btnSave.Visibility = Visibility.Visible;
             btnCancel.Visibility = Visibility.Visible;

@@ -11,13 +11,18 @@
         <converter:ConverterValue x:Key="converter"></converter:ConverterValue>
     </UserControl.Resources>
     <StackPanel Orientation="Vertical">
-        <TextBlock Text="{Binding Parametr}" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="22"></TextBlock>
+        <TextBlock Text="{Binding TitleParametr}" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="22"></TextBlock>
         <TextBox TextWrapping="Wrap" Margin="10,5" Text="{Binding Value}" VerticalAlignment="Center" Width="350" FontSize="22"></TextBox>
         <Grid x:Name="gridCb">
             <StackPanel Orientation="Vertical">
                 <Grid Height="30">
                     <TextBox VerticalContentAlignment="Center" TextChanged="TextBox_TextChanged"></TextBox>
                     <Label Foreground="Gray" IsHitTestVisible="False" Content="{Binding Hint}" Visibility="{Binding IsVisibleHint}"></Label>
+                </Grid>
+                <Button x:Name="searchBtn" Content="Поиск" Height="30" Margin="5"></Button>
+                <Grid Margin="5">
+                    <ComboBox x:Name="resultCb"></ComboBox>
+                    <Label x:Name="ErrorInComboBoxLabel" Content="Список пуст" HorizontalAlignment="Center" Foreground="Gray"></Label>
                 </Grid>
             </StackPanel>
         </Grid>
