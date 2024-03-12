@@ -8,18 +8,18 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <StackPanel Orientation="Vertical" Margin="5,10">
-        <TextBlock Text="{Binding TitleParametr}" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="22"></TextBlock>
-        <TextBox TextWrapping="Wrap" Margin="10,5" Text="{Binding Value}" VerticalAlignment="Center" Width="350" FontSize="22"></TextBox>
+        <TextBlock MaxWidth="350" Text="{Binding TitleParametr}" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="22"></TextBlock>
+        <TextBox Padding="10,5" TextWrapping="Wrap" Margin="10,5" Text="{Binding Value}" VerticalAlignment="Center" MaxWidth="350" FontSize="22"></TextBox>
         <Grid x:Name="gridCb">
             <StackPanel Orientation="Vertical">
                 <Grid Height="30">
                     <TextBox VerticalContentAlignment="Center" TextChanged="TextBox_TextChanged" FontSize="22"></TextBox>
                     <Label Foreground="Gray" IsHitTestVisible="False" Content="{Binding Hint}" Visibility="{Binding IsVisibleHint}"></Label>
                 </Grid>
-                <Button x:Name="searchBtn" Content="Поиск" Height="30" Margin="5"></Button>
+                <Button x:Name="SearchBtn" Click="SearchBtn_Click" Content="Поиск" Height="30" Margin="5"></Button>
                 <TextBlock x:Name="errorSearchTextblock" Foreground="Red" FontSize="18" Margin="5"></TextBlock>
                 <Grid Margin="5">
-                    <ComboBox x:Name="resultCb"></ComboBox>
+                    <ComboBox x:Name="resultCb" SelectionChanged="resultCb_SelectionChanged"></ComboBox>
                     <Label x:Name="ErrorInComboBoxLabel" Content="Список пуст" HorizontalAlignment="Center" Foreground="Gray"></Label>
                 </Grid>
             </StackPanel>

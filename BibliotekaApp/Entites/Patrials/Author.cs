@@ -9,6 +9,6 @@ namespace BibliotekaApp.Entites
     public partial class Author
     {
         public int Age => (int)(DateTime.Now.Date - DateOfBirth.Date).TotalDays/ 30 / 365;
-        public string FullName => $"{LastName} {FirstName} {Patronymic}";
+        public string FullName { get => $"{LastName} {FirstName} {Patronymic}"; }
     }
 }

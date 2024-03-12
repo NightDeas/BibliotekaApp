@@ -25,18 +25,7 @@
                 <DataGridTextColumn Header="Издатель" Binding="{Binding Publisher.Name}" property:DataGridExtensions.Title="Publisher.Name"></DataGridTextColumn>
                 <DataGridTextColumn Header="Год публикации" Binding="{Binding YearOfPublication}" property:DataGridExtensions.Title="YearOfPublication"></DataGridTextColumn>
                 <DataGridTextColumn Header="Жанр" Binding="{Binding Genre.Name}" property:DataGridExtensions.Title="Genre.Name"></DataGridTextColumn>
-                <DataGridTemplateColumn MinWidth="150" Width="30" Header="Действия">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <ComboBox>
-                                <ComboBoxItem Content="Выдать книгу читателю"></ComboBoxItem>
-                                <ComboBoxItem Content="Редактировать" Selected="ComboBoxItem_Selected"></ComboBoxItem>
-                                <ComboBoxItem Content="Списать книгу"></ComboBoxItem>
-                            </ComboBox>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-                <DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="Действия">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <Menu>
@@ -53,18 +42,18 @@
         </DataGrid>
         <Grid Grid.Column="1" Grid.Row="1" x:Name="addorEditrBookGrid">
             <Grid.RowDefinitions>
-                <RowDefinition Height="30"/>
+                <RowDefinition Height="50"/>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
             
-                <TextBlock Grid.Row="0" x:Name="titleOperationTb" Text="sdfds" FontSize="22" HorizontalAlignment="Center"></TextBlock>
+                <TextBlock Grid.Row="0" x:Name="titleOperationTb" Text="sdfds" FontSize="18" HorizontalAlignment="Center"></TextBlock>
             <ScrollViewer Grid.Row="1">
                 <StackPanel x:Name="listParametrsStackPanel"></StackPanel>
             </ScrollViewer>
                 <StackPanel Orientation="Vertical" Grid.Row="2">
-                <Button Margin="5" x:Name="btnSave" Visibility="Collapsed" Content="Сохранить" FontSize="22" Click="SaveBtn_Click"></Button>
-                    <Button Margin="5" x:Name="btnCancel" Visibility="Collapsed" Content="Отмена" FontSize="22" Click="CancelBtn_Click"></Button>
+                <Button Margin="5" x:Name="btnSave" Visibility="Collapsed" Content="Сохранить" FontSize="18" Click="SaveBtn_Click"></Button>
+                    <Button Margin="5" x:Name="btnCancel" Visibility="Collapsed" Content="Отмена" FontSize="18" Click="CancelBtn_Click"></Button>
                 </StackPanel>
         </Grid>
     </Grid>
