@@ -43,11 +43,11 @@ namespace BibliotekaApp.Pages
 
         private void ComboBoxItem_Selected(object sender, RoutedEventArgs e)
         {
-            titleOperationTb.DataContext = sender as ComboBox;
             listParametrsStackPanel.Children.Clear();
             var book = dataGrid.SelectedItem as Book;
             if (book is null)
                 return;
+            titleOperationTb.Text = $"Редактирование книги #{book.Id}";
             Info info = new Info();
             var keyValuePairs = App.list.FirstOrDefault(x => x.Key == "Book");
             foreach (var item in keyValuePairs.Value)
@@ -63,17 +63,17 @@ namespace BibliotekaApp.Pages
                     case "Author.FullName":
                         info.Value = book.Author.FullName;
                         info.IsHasComboBox = true; 
-                        info.Hint = "Введите ФИО автора";
+                        info.Hint = "Введите ФИО автора для поиска в БД";
                         break;
                     case "Publisher.Name":
                         info.Value = book.Publisher.Name;
                         info.IsHasComboBox = true;
-                        info.Hint = "Введите название издательства";
+                        info.Hint = "Введите название издательства для поиска в БД";
                         break;
                     case "Genre.Name":
                         info.Value = book.Publisher.Name;
                         info.IsHasComboBox = true;
-                        info.Hint = "Введите жанр";
+                        info.Hint = "Введите жанр для поиска в БД";
                         break;
                     case "YearOfPublication":
                         info.Value = book.YearOfPublication.ToString();
@@ -95,9 +95,65 @@ namespace BibliotekaApp.Pages
 
         }
 
-        private void btnCancel_Click(object sender, RoutedEventArgs e)
+        private void CancelBtn_Click(object sender, RoutedEventArgs e)
         {
             addorEditrBookGrid.Visibility = Visibility.Collapsed;
+        }
+
+        private void SaveBtn_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void EditBook(object sender, RoutedEventArgs e)
+        {
+            listParametrsStackPanel.Children.Clear();
+            var book = dataGrid.SelectedItem as Book;
+            if (book is null)
+                return;
+            titleOperationTb.Text = $"Редактирование книги #{book.Id}";
+            Info info = new Info();
+            var keyValuePairs = App.list.FirstOrDefault(x => x.Key == "Book");
+            foreach (var item in keyValuePairs.Value)
+            {
+                info.Parametr = item.Key;
+                info.TitleParametr = item.Value;
+                switch (item.Key)
+                {
+                    case "Name":
+                        info.Value = book.Name;
+                        info.IsHasComboBox = false;
+                        break;
+                    case "Author.FullName":
+                        info.Value = book.Author.FullName;
+                        info.IsHasComboBox = true;
+                        info.Hint = "Введите ФИО автора для поиска в БД";
+                        break;
+                    case "Publisher.Name":
+                        info.Value = book.Publisher.Name;
+                        info.IsHasComboBox = true;
+                        info.Hint = "Введите название издательства для поиска в БД";
+                        break;
+                    case "Genre.Name":
+                        info.Value = book.Publisher.Name;
+                        info.IsHasComboBox = true;
+                        info.Hint = "Введите жанр для поиска в БД";
+                        break;
+                    case "YearOfPublication":
+                        info.Value = book.YearOfPublication.ToString();
+                        info.IsHasComboBox = false;
+                        break;
+                    default:
+                        Trace.WriteLine($"Не найден параметр в словаре: {item.Key}");
+                        continue;
+                }
+                if (string.IsNullOrEmpty(info.Parametr) || string.IsNullOrEmpty(info.Value))
+                    return;
+                listParametrsStackPanel.Children.Add(new UserControls.Parametrs(info));
+            }
+            btnSave.Visibility = Visibility.Visible;
+            btnCancel.Visibility = Visibility.Visible;
+            addorEditrBookGrid.Visibility = Visibility.Visible;
         }
     }
 }

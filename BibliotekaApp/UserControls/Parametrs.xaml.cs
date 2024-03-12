@@ -23,19 +23,21 @@ namespace BibliotekaApp.UserControls
     /// </summary>
     public partial class Parametrs : UserControl, INotifyPropertyChanged
     {
-        public string Parametr { get; set; }    
+        public string Parametr { get; set; }
         public string TitleParametr { get; set; }
         public object Value { get; set; }
-        public bool isHasComboBox { get;set; }
+        public bool isHasComboBox { get; set; }
         public string Hint { get; set; }
 
         private string _textSearch { get; set; }
+
+       
 
         private Visibility _isVisibleHint = Visibility.Visible;
 
         public Visibility IsVisibleHint
         {
-            get  => _isVisibleHint;
+            get => _isVisibleHint;
             private set
             {
                 _isVisibleHint = value;
@@ -49,7 +51,7 @@ namespace BibliotekaApp.UserControls
         {
             InitializeComponent();
             DataContext = this;
-            resultCb.IsEnabled = false; 
+            resultCb.IsEnabled = false;
             ErrorInComboBoxLabel.Visibility = Visibility.Visible;
         }
 
@@ -60,6 +62,10 @@ namespace BibliotekaApp.UserControls
             Value = info.Value;
             this.isHasComboBox = info.IsHasComboBox;
             Hint = info.Hint;
+
+            gridCb.Visibility = info.IsHasComboBox ? Visibility.Visible : Visibility.Collapsed;
+
+
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;
@@ -74,7 +80,7 @@ namespace BibliotekaApp.UserControls
         {
             if ((sender as TextBox).Text.Length > 0)
             {
-                IsVisibleHint =  Visibility.Collapsed;
+                IsVisibleHint = Visibility.Collapsed;
                 //Trace.WriteLineIf(!IsVisibleHint, IsVisibleHint);
             }
             else
