@@ -9,7 +9,13 @@
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="Список книг" Loaded="Page_LoadedAsync">
+    <Page.Resources>
+        <ContextMenu x:Key="contextMenu">
+            <MenuItem Header="Добавить книгу" Click="MenuItem_Click"></MenuItem>
+        </ContextMenu>
+    </Page.Resources>
     <Grid>
+       
         <Grid.RowDefinitions>
             <RowDefinition Height="0"></RowDefinition>
             <RowDefinition></RowDefinition>
@@ -19,7 +25,7 @@
             <ColumnDefinition Width="3*"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-                <DataGrid x:Name="dataGrid" Grid.Row="1" AutoGenerateColumns="False" IsReadOnly="True" Grid.Column="0" FontSize="14">
+                <DataGrid x:Name="dataGrid" Grid.Row="1" AutoGenerateColumns="False" IsReadOnly="True" Grid.Column="0" FontSize="14" ContextMenu="{StaticResource contextMenu}">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Название" Binding="{Binding Name}" property:DataGridExtensions.Title="Name"></DataGridTextColumn>
                 <DataGridTextColumn Header="ФИО автора" Binding="{Binding Author.FullName}" property:DataGridExtensions.Title="Author.FullName"></DataGridTextColumn>
@@ -33,13 +39,14 @@
                                 <MenuItem Header="Редактировать">
                                     <MenuItem Header="Выдать книгу читателю" Background="WhiteSmoke" ></MenuItem>
                                     <MenuItem Header="Редактировать" Background="WhiteSmoke"  Click="EditBook"></MenuItem>
-                                    <MenuItem Header="Списать книгу" Background="WhiteSmoke"></MenuItem>
+                                    <MenuItem Header="Списать книгу" Background="WhiteSmoke" Click="DeleteBook"></MenuItem>
                                 </MenuItem>
                             </Menu>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
             </DataGrid.Columns>
+          
         </DataGrid>
         <Grid Grid.Column="1" Grid.Row="1" x:Name="addorEditrBookGrid">
             <Grid.RowDefinitions>

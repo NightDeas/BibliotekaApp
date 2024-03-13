@@ -43,7 +43,7 @@ namespace BibliotekaApp.UserControls
         public string Hint { get; set; }
 
         private string _textSearch { get; set; }
-        
+
 
 
 
@@ -68,6 +68,7 @@ namespace BibliotekaApp.UserControls
             DataContext = this;
             resultCb.IsEnabled = false;
             ErrorInComboBoxLabel.Visibility = Visibility.Visible;
+            InputDataTextBox.IsReadOnly = isHasComboBox ? true : false;
         }
 
         public Parametrs(Book book, Info info, Page page) : this()
@@ -109,6 +110,8 @@ namespace BibliotekaApp.UserControls
             switch (Parametr)
             {
                 case "Author.FullName":
+                    if (_textSearch == null)
+                        return;
                     string[] fio = _textSearch.Split("");
                     if (fio.Length > 3)
                     {
@@ -142,8 +145,8 @@ namespace BibliotekaApp.UserControls
                     }
                     else
                     {
-                    errorSearchTextblock.Text = @"Значение не может содержать спец.символы или цифры, только буквы";
-                    return;
+                        errorSearchTextblock.Text = @"Значение не может содержать спец.символы или цифры, только буквы";
+                        return;
                     }
                 case "Publisher.Name":
                     if (new Regex(@"^\w$").IsMatch(_textSearch))
@@ -205,18 +208,25 @@ namespace BibliotekaApp.UserControls
 
             switch (Parametr)
             {
+
                 case "Author.FullName":
                     Value = (selectedValue as Author).FullName;
                     Book.AuthorId = (selectedValue as Author).Id;
+                    Book.Author = selectedValue as Author;
                     break;
                 case "Publisher.Name":
                     Value = (selectedValue as PublishingHouse).Name;
                     Book.PublisherId = (selectedValue as PublishingHouse).Id;
+                    Book.Publisher = selectedValue as PublishingHouse;
                     break;
                 case "Genre.Name":
                     Value = (selectedValue as Genre).Name;
                     Book.GenreId = (selectedValue as Genre).Id;
                     Book.Genre = (selectedValue as Genre);
+                    break;
+                case "YearOfPublication":
+                    int.TryParse(InputDataTextBox.Text, out int year);
+                    Book.YearOfPublication = year;
                     break;
                 default:
                     Trace.WriteLine($"Не найдено Parametr в словаре: {Parametr}");
@@ -232,6 +242,17 @@ namespace BibliotekaApp.UserControls
         private void TextBox_TextChanged_2(object sender, TextChangedEventArgs e)
         {
             Value = (sender as TextBox).Text;
+            switch (Parametr)
+            {
+
+                case "Name":
+                    Book.Name = Value.ToString();
+                    break;
+                case "YearOfPublication":
+                    int.TryParse(Value.ToString(), out int year);
+                    Book.YearOfPublication = year;
+                    break;
+            }
         }
 
         private void TextBox_LostFocus(object sender, RoutedEventArgs e)
@@ -247,13 +268,13 @@ namespace BibliotekaApp.UserControls
                     if (fio.Length == 2)
                         findResult = App.Context.Authors.Any(x => x.LastName == fio[0] && x.FirstName == fio[1]);
                     if (fio.Length == 3)
-                        findResult = App.Context.Authors.Any(x => x.LastName == fio[0] && x.FirstName == fio[1] && x.Patronymic == fio[2]); 
+                        findResult = App.Context.Authors.Any(x => x.LastName == fio[0] && x.FirstName == fio[1] && x.Patronymic == fio[2]);
                     break;
                 case "Publisher.Name":
-                   
+
                     break;
                 case "Genre.Name":
-                    
+
                     break;
                 default:
                     Trace.WriteLine($"Не найдено Parametr в словаре: {Parametr}");

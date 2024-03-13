@@ -14,5 +14,12 @@ namespace BibliotekaApp.Enums
             Bad,
             Warning
         }
+
+        public enum OperationEntity
+        {
+            Add,
+            Edit,
+            Delete
+        }
     }
 }
