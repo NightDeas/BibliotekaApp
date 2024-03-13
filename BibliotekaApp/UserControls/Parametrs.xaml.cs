@@ -1,4 +1,5 @@
 ﻿using BibliotekaApp.Entites;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -77,7 +78,6 @@ namespace BibliotekaApp.UserControls
 
             gridCb.Visibility = info.IsHasComboBox ? Visibility.Visible : Visibility.Collapsed;
 
-
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;
@@ -100,7 +100,7 @@ namespace BibliotekaApp.UserControls
             _textSearch = (sender as TextBox).Text;
         }
 
-        private void SearchBtn_Click(object sender, RoutedEventArgs e)
+        private async void SearchBtn_Click(object sender, RoutedEventArgs e)
         {
             switch (Parametr)
             {
@@ -111,37 +111,40 @@ namespace BibliotekaApp.UserControls
                         errorSearchTextblock.Text = @"Значение должно быть записано в формате""Фамилия Имя Отчество"". Например Иванов Иван Иванович";
                         return;
                     }
-                    if (new Regex(@"^\w$").IsMatch(_textSearch))
+                    if (new Regex(@"^\S+$").IsMatch(_textSearch))
                     {
-                        errorSearchTextblock.Text = @"Значение не может содержать спец.символы или цифры, только буквы";
-                        return;
-                    }
-                    List<Author> authorList = new List<Author>();
-                    if (fio.Length == 1)
-                        authorList = new DbContextBiblioteka().Authors.Where(x => x.LastName == fio[0]).ToList();
-                    if (fio.Length == 2)
-                        authorList = new DbContextBiblioteka().Authors.Where(x => x.LastName == fio[0] && x.FirstName == fio[1]).ToList();
-                    if (fio.Length == 3)
-                        authorList = new DbContextBiblioteka().Authors.Where(x => x.LastName == fio[0] && x.FirstName == fio[1] && x.Patronymic == fio[2]).ToList();
-                    if (authorList == null)
-                    {
-                        errorSearchTextblock.Text = @"Ничего не найдено";
-                        resultCb.IsEnabled = false;
-                        ErrorInComboBoxLabel.Visibility = Visibility.Visible;
-                        return;
+                        List<Author> authorList = new List<Author>();
+                        if (fio.Length == 1)
+                            authorList = await new DbContextBiblioteka().Authors.Where(x => x.LastName == fio[0]).ToListAsync();
+                        if (fio.Length == 2)
+                            authorList = await new DbContextBiblioteka().Authors.Where(x => x.LastName == fio[0] && x.FirstName == fio[1]).ToListAsync();
+                        if (fio.Length == 3)
+                            authorList = await new DbContextBiblioteka().Authors.Where(x => x.LastName == fio[0] && x.FirstName == fio[1] && x.Patronymic == fio[2]).ToListAsync();
+                        if (authorList == null)
+                        {
+                            errorSearchTextblock = Messages.Message(errorSearchTextblock, "Ничего не найдено", Enums.Enums.StatusMessage.Bad);
+                            resultCb.IsEnabled = false;
+                            ErrorInComboBoxLabel.Visibility = Visibility.Visible;
+                            return;
+                        }
+                        else
+                        {
+                            resultCb.ItemsSource = authorList;
+                            resultCb.IsEnabled = true;
+                            resultCb.DisplayMemberPath = "FullName";
+                            ErrorInComboBoxLabel.Visibility = Visibility.Collapsed;
+                        }
+                        break;
                     }
                     else
                     {
-                        resultCb.ItemsSource = authorList;
-                        resultCb.IsEnabled = true;
-                        resultCb.DisplayMemberPath = "FullName";
-                        ErrorInComboBoxLabel.Visibility = Visibility.Collapsed;
+                    errorSearchTextblock.Text = @"Значение не может содержать спец.символы или цифры, только буквы";
+                    return;
                     }
-                    break;
                 case "Publisher.Name":
                     if (new Regex(@"^\w$").IsMatch(_textSearch))
                     {
-                        errorSearchTextblock.Text = @"Значение не может содержать спец.символы или цифры, только буквы";
+                        errorSearchTextblock = Messages.Message(errorSearchTextblock, "Значение не может содержать спец.символы или цифры, только буквы", Enums.Enums.StatusMessage.Bad);
                         return;
                     }
                     List<PublishingHouse> publishingHouseList = new List<PublishingHouse>();
@@ -162,14 +165,14 @@ namespace BibliotekaApp.UserControls
                     }
                     break;
                 case "Genre.Name":
-                    if (new Regex(@"\w").IsMatch(_textSearch))
+                    if (!new Regex(@"^\S+$").IsMatch(_textSearch))
                     {
                         errorSearchTextblock.Text = @"Значение не может содержать спец.символы или цифры, только буквы";
                         return;
                     }
-                    List<PublishingHouse> GenreList = new List<PublishingHouse>();
-                    GenreList = new DbContextBiblioteka().PublishingHouses.Where(x => x.Name == _textSearch).ToList();
-                    if (GenreList == null)
+                    List<Genre> GenreList = new List<Genre>();
+                    GenreList = new DbContextBiblioteka().Genres.Where(x => x.Name == _textSearch).ToList();
+                    if (GenreList.Count == 0)
                     {
                         errorSearchTextblock.Text = @"Ничего не найдено";
                         resultCb.IsEnabled = false;
@@ -209,11 +212,22 @@ namespace BibliotekaApp.UserControls
                 case "Genre.Name":
                     Value = (selectedValue as Genre).Name;
                     Book.GenreId = (selectedValue as Genre).Id;
+                    Book.Genre = (selectedValue as Genre);
                     break;
                 default:
                     Trace.WriteLine($"Не найдено Parametr в словаре: {Parametr}");
                     break;
             }
+        }
+
+        private void TextBox_TextChanged_1(object sender, TextChangedEventArgs e)
+        {
+
+        }
+
+        private void TextBox_TextChanged_2(object sender, TextChangedEventArgs e)
+        {
+            Value = (sender as TextBox).Text;
         }
     }
 }

@@ -6,8 +6,10 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Reflection.Metadata.Ecma335;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -20,6 +22,8 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using BibliotekaApp.Entites;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
+using Microsoft.Identity.Client.NativeInterop;
 
 namespace BibliotekaApp.Pages
 {
@@ -28,13 +32,34 @@ namespace BibliotekaApp.Pages
     /// </summary>
     public partial class BooksPage : Page
     {
-        List<Book> books = new List<Book>();
+        Book Book = new Book();
+
         public BooksPage()
         {
             InitializeComponent();
-            books = new Entites.DbContextBiblioteka().Books.Include(x=> x.Author).Include(x=> x.Publisher).Include(x=> x.Genre).ToList();
-            dataGrid.ItemsSource = books;
             addorEditrBookGrid.Visibility = Visibility.Collapsed;
+        }
+        private async void Page_LoadedAsync(object sender, RoutedEventArgs e)
+        {
+            await LoadDataAsync();
+        }
+
+        private async Task LoadDataAsync()
+        {
+            MessageProgressTextBlock = Messages.Message(MessageProgressTextBlock, "Загрузка данных", Enums.Enums.StatusMessage.Warning);
+            try
+            {
+            dataGrid.ItemsSource = await new DbContextBiblioteka().Books
+                    .Include(x => x.Author)
+                    .Include(x => x.Publisher)
+                    .Include(x => x.Genre)
+                    .ToListAsync();
+                MessageProgressTextBlock = Messages.Message(MessageProgressTextBlock, "Данные загружены", Enums.Enums.StatusMessage.Good);
+            }
+            catch (Exception)
+            {
+                MessageProgressTextBlock = Messages.Message(MessageProgressTextBlock, "Произошла ошибка при загрузке данных", Enums.Enums.StatusMessage.Bad);
+            }
         }
 
         private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -52,16 +77,21 @@ namespace BibliotekaApp.Pages
 
         private void SaveBtn_Click(object sender, RoutedEventArgs e)
         {
-
+            using (var context = new DbContextBiblioteka())
+            {
+                context.Entry(Book).State = EntityState.Modified;
+                context.SaveChanges();
+            }
+            MessageBox.Show("Данные сохранены");
         }
 
         private void EditBook(object sender, RoutedEventArgs e)
         {
             listParametrsStackPanel.Children.Clear();
-            var book = dataGrid.SelectedItem as Book;
-            if (book is null)
+            Book = dataGrid.SelectedItem as Book;
+            if (Book is null)
                 return;
-            titleOperationTb.Text = $"Редактирование книги #{book.Id}";
+            titleOperationTb.Text = $"Редактирование книги #{Book.Id}";
             Info info = new Info();
             var keyValuePairs = App.list.FirstOrDefault(x => x.Key == "Book");
             foreach (var item in keyValuePairs.Value)
@@ -71,26 +101,26 @@ namespace BibliotekaApp.Pages
                 switch (item.Key)
                 {
                     case "Name":
-                        info.Value = book.Name;
+                        info.Value = Book.Name;
                         info.IsHasComboBox = false;
                         break;
                     case "Author.FullName":
-                        info.Value = book.Author.FullName;
+                        info.Value = Book.Author.FullName;
                         info.IsHasComboBox = true;
                         info.Hint = "Введите ФИО автора для поиска в БД";
                         break;
                     case "Publisher.Name":
-                        info.Value = book.Publisher.Name;
+                        info.Value = Book.Publisher.Name;
                         info.IsHasComboBox = true;
                         info.Hint = "Введите название издательства для поиска в БД";
                         break;
                     case "Genre.Name":
-                        info.Value = book.Genre.Name;
+                        info.Value = Book.Genre.Name;
                         info.IsHasComboBox = true;
                         info.Hint = "Введите жанр для поиска в БД";
                         break;
                     case "YearOfPublication":
-                        info.Value = book.YearOfPublication.ToString();
+                        info.Value = Book.YearOfPublication.ToString();
                         info.IsHasComboBox = false;
                         break;
                     default:
@@ -99,11 +129,13 @@ namespace BibliotekaApp.Pages
                 }
                 if (string.IsNullOrEmpty(info.Parametr) || string.IsNullOrEmpty(info.Value))
                     return;
-                listParametrsStackPanel.Children.Add(new UserControls.Parametrs(book, info));
+                listParametrsStackPanel.Children.Add(new UserControls.Parametrs(Book, info));
             }
             btnSave.Visibility = Visibility.Visible;
             btnCancel.Visibility = Visibility.Visible;
             addorEditrBookGrid.Visibility = Visibility.Visible;
         }
+
+     
     }
 }
