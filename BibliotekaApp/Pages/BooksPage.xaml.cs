@@ -32,13 +32,16 @@ namespace BibliotekaApp.Pages
     /// </summary>
     public partial class BooksPage : Page
     {
+        public bool IsHasErrorInInputData = false;
         Book Book = new Book();
+       
 
         public BooksPage()
         {
             InitializeComponent();
             addorEditrBookGrid.Visibility = Visibility.Collapsed;
         }
+
         private async void Page_LoadedAsync(object sender, RoutedEventArgs e)
         {
             await LoadDataAsync();
@@ -75,14 +78,22 @@ namespace BibliotekaApp.Pages
             addorEditrBookGrid.Visibility = Visibility.Collapsed;
         }
 
+
+
         private void SaveBtn_Click(object sender, RoutedEventArgs e)
         {
+            if (IsHasErrorInInputData)
+            {
+                btnSave.IsEnabled = false;
+                Messages.Message(MessageProgressTextBlock, "Невозможно сохранить данные, т.к обнаружены ошибки", Enums.Enums.StatusMessage.Bad);
+                return;
+            }
             using (var context = new DbContextBiblioteka())
             {
                 context.Entry(Book).State = EntityState.Modified;
                 context.SaveChanges();
+                MessageBox.Show("Данные сохранены");
             }
-            MessageBox.Show("Данные сохранены");
         }
 
         private void EditBook(object sender, RoutedEventArgs e)
@@ -129,7 +140,7 @@ namespace BibliotekaApp.Pages
                 }
                 if (string.IsNullOrEmpty(info.Parametr) || string.IsNullOrEmpty(info.Value))
                     return;
-                listParametrsStackPanel.Children.Add(new UserControls.Parametrs(Book, info));
+                listParametrsStackPanel.Children.Add(new UserControls.Parametrs(Book, info, this));
             }
             btnSave.Visibility = Visibility.Visible;
             btnCancel.Visibility = Visibility.Visible;

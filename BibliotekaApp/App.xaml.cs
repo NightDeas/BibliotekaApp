@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BibliotekaApp.Entites;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
@@ -28,6 +29,7 @@ namespace BibliotekaApp
                 }
             }
         };
+        public static DbContextBiblioteka Context = new DbContextBiblioteka();
 
       
 
