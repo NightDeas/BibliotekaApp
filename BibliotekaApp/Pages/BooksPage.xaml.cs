@@ -276,7 +276,7 @@ namespace BibliotekaApp.Pages
         private void MenuItem_Click(object sender, RoutedEventArgs e)
         {
             GenerateStackPanel("Book", OperationEntity.Add);
-            btnSave.Tag = Enums.Enums.OperationEntity.Add;
+            btnSave.Tag = OperationEntity.Add;
         }
     }
 }
