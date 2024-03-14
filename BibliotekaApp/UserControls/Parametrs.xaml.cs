@@ -60,7 +60,6 @@ namespace BibliotekaApp.UserControls
         }
 
         Book Book;
-        Page page;
 
         public Parametrs()
         {
@@ -68,10 +67,9 @@ namespace BibliotekaApp.UserControls
             DataContext = this;
             resultCb.IsEnabled = false;
             ErrorInComboBoxLabel.Visibility = Visibility.Visible;
-            InputDataTextBox.IsReadOnly = isHasComboBox ? true : false;
         }
 
-        public Parametrs(Book book, Info info, Page page) : this()
+        public Parametrs(Book book, Info info, bool isDelete) : this()
         {
             Parametr = info.Parametr;
             TitleParametr = info.TitleParametr;
@@ -79,9 +77,9 @@ namespace BibliotekaApp.UserControls
             this.isHasComboBox = info.IsHasComboBox;
             Hint = info.Hint;
             Book = book;
-            this.page = page;
-
             gridCb.Visibility = info.IsHasComboBox ? Visibility.Visible : Visibility.Collapsed;
+            InputDataTextBox.IsReadOnly = isHasComboBox ? true : false;
+            InputDataTextBox.IsReadOnly = isDelete ? true : InputDataTextBox.IsReadOnly;
 
         }
 
@@ -234,10 +232,7 @@ namespace BibliotekaApp.UserControls
             }
         }
 
-        private void TextBox_TextChanged_1(object sender, TextChangedEventArgs e)
-        {
-
-        }
+      
 
         private void TextBox_TextChanged_2(object sender, TextChangedEventArgs e)
         {
@@ -257,41 +252,41 @@ namespace BibliotekaApp.UserControls
 
         private void TextBox_LostFocus(object sender, RoutedEventArgs e)
         {
-            string text = (sender as TextBox).Text;
-            string[] fio = text.Split(" ");
-            bool findResult = false;
-            switch (Parametr)
-            {
-                case "Author.FullName":
-                    if (fio.Length == 1)
-                        findResult = App.Context.Authors.Any(x => x.LastName == fio[0]);
-                    if (fio.Length == 2)
-                        findResult = App.Context.Authors.Any(x => x.LastName == fio[0] && x.FirstName == fio[1]);
-                    if (fio.Length == 3)
-                        findResult = App.Context.Authors.Any(x => x.LastName == fio[0] && x.FirstName == fio[1] && x.Patronymic == fio[2]);
-                    break;
-                case "Publisher.Name":
+            //string text = (sender as TextBox).Text;
+            //string[] fio = text.Split(" ");
+            //bool findResult = false;
+            //switch (Parametr)
+            //{
+            //    case "Author.FullName":
+            //        if (fio.Length == 1)
+            //            findResult = App.Context.Authors.Any(x => x.LastName == fio[0]);
+            //        if (fio.Length == 2)
+            //            findResult = App.Context.Authors.Any(x => x.LastName == fio[0] && x.FirstName == fio[1]);
+            //        if (fio.Length == 3)
+            //            findResult = App.Context.Authors.Any(x => x.LastName == fio[0] && x.FirstName == fio[1] && x.Patronymic == fio[2]);
+            //        break;
+            //    case "Publisher.Name":
 
-                    break;
-                case "Genre.Name":
+            //        break;
+            //    case "Genre.Name":
 
-                    break;
-                default:
-                    Trace.WriteLine($"Не найдено Parametr в словаре: {Parametr}");
-                    break;
-            }
-            if (!findResult)
-            {
-                errorSearchTextblock = Messages.Message(errorSearchTextblock, "Ничего не найдено", Enums.Enums.StatusMessage.Bad);
-                (page as BooksPage).IsHasErrorInInputData = true;
-                (sender as TextBox).Foreground = Brushes.Red;
-                errorSearchTextblock.Visibility = Visibility.Visible;
-            }
-            else
-            {
-                (sender as TextBox).Foreground = Brushes.Black;
-                errorSearchTextblock.Visibility = Visibility.Collapsed;
-            }
+            //        break;
+            //    default:
+            //        Trace.WriteLine($"Не найдено Parametr в словаре: {Parametr}");
+            //        break;
+            //}
+            //if (!findResult)
+            //{
+            //    errorSearchTextblock = Messages.Message(errorSearchTextblock, "Ничего не найдено", Enums.Enums.StatusMessage.Bad);
+            //    (page as BooksPage).IsHasErrorInInputData = true;
+            //    (sender as TextBox).Foreground = Brushes.Red;
+            //    errorSearchTextblock.Visibility = Visibility.Visible;
+            //}
+            //else
+            //{
+            //    (sender as TextBox).Foreground = Brushes.Black;
+            //    errorSearchTextblock.Visibility = Visibility.Collapsed;
+            //}
         }
     }
 }

@@ -8,6 +8,7 @@ using System.Reflection;
 using System.Reflection.Metadata.Ecma335;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using System.Security.Policy;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -20,10 +21,13 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+
 using BibliotekaApp.Entites;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Identity.Client.NativeInterop;
+
 using static BibliotekaApp.Enums.Enums;
 
 namespace BibliotekaApp.Pages
@@ -81,10 +85,10 @@ namespace BibliotekaApp.Pages
 
 
 
-        private void SaveBtn_Click(object sender, RoutedEventArgs e)
+        private async void SaveBtn_Click(object sender, RoutedEventArgs e)
         {
             Enums.Enums.OperationEntity operation = (OperationEntity)(sender as Button).Tag;
-            
+
             //if (IsHasErrorInInputData)
             //{
             //    btnSave.IsEnabled = false;
@@ -106,6 +110,7 @@ namespace BibliotekaApp.Pages
                 default:
                     throw new Exception();
             }
+            await LoadDataAsync();
         }
 
         private void AddEntity()
@@ -179,7 +184,7 @@ namespace BibliotekaApp.Pages
                     titleOperationTb.Text = $"Добавление книги";
                     Book = new();
                     break;
-                case Enums.Enums.OperationEntity.Edit:
+                case OperationEntity.Edit:
                     btnSave.Content = "Редактировать";
                     titleOperationTb.Text = $"Редактирование книги #{Book.Id}";
                     break;
@@ -204,31 +209,32 @@ namespace BibliotekaApp.Pages
                     {
                         case "Name":
                             info.Value = Book.Name ?? "";
-                            info.IsHasComboBox = false;
+                            info.IsHasComboBox = operation == OperationEntity.Delete ? false : false;
                             break;
                         case "Author.FullName":
                             info.Value = Book.Author.FullName ?? "";
-                            info.IsHasComboBox = true;
+                            info.IsHasComboBox = operation == OperationEntity.Delete ? false : true;
                             info.Hint = "Введите ФИО автора для поиска в БД";
                             break;
                         case "Publisher.Name":
                             info.Value = Book.Publisher.Name ?? "";
-                            info.IsHasComboBox = true;
+                            info.IsHasComboBox = operation == OperationEntity.Delete ? false : true;
                             info.Hint = "Введите название издательства для поиска в БД";
                             break;
                         case "Genre.Name":
                             info.Value = Book.Genre.Name ?? "";
-                            info.IsHasComboBox = true;
+                            info.IsHasComboBox = operation == OperationEntity.Delete ? false : true;
                             info.Hint = "Введите жанр для поиска в БД";
                             break;
                         case "YearOfPublication":
                             info.Value = Book.YearOfPublication.ToString() ?? "";
-                            info.IsHasComboBox = false;
+                            info.IsHasComboBox = operation == OperationEntity.Delete ? false : false;
                             break;
                         default:
                             Trace.WriteLine($"Не найден параметр в словаре: {item.Key}");
                             continue;
                     }
+                 
                 }
                 else
                 {
@@ -259,7 +265,8 @@ namespace BibliotekaApp.Pages
                 }
                 if (string.IsNullOrEmpty(info.Parametr))
                     return;
-                listParametrsStackPanel.Children.Add(new UserControls.Parametrs(Book, info, this));
+                bool isDelete = operation == OperationEntity.Delete ? true : false;
+                listParametrsStackPanel.Children.Add(new UserControls.Parametrs(Book, info, isDelete));
             }
             btnSave.Visibility = Visibility.Visible;
             btnCancel.Visibility = Visibility.Visible;
