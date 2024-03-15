@@ -37,8 +37,8 @@ public partial class DbContextBiblioteka : DbContext
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
     //=> optionsBuilder.UseSqlServer("Data Source=DESKTOP-NM4JG25\\TEST;Initial Catalog=113-PR-Burnasov-Biblioteka1;Integrated Security=True;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False");
     //=> optionsBuilder.UseSqlServer("Data Source=derideveloper.ru;Initial Catalog=BurnasovLibrary;User ID=BurnosovSergeyTest;Password=PasswordTopSuper123@;Integrated Security=False;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False");
-    //=> optionsBuilder.UseSqlServer("Data Source=DESKTOP-JJSJSDV\\SQLEXPRESS;Initial Catalog=113-PR-Burnasov-Biblioteka1;Integrated Security=True;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False");
-    => optionsBuilder.UseSqlServer("Data Source=169.254.131.3;Initial Catalog=113_Burnasov_Biblioteka_course;User ID=Stud;Password=Qwerty123456$;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False");
+    => optionsBuilder.UseSqlServer("Data Source=DESKTOP-JJSJSDV\\SQLEXPRESS;Initial Catalog=113-PR-Burnasov-Biblioteka1;Integrated Security=True;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False");
+    //=> optionsBuilder.UseSqlServer("Data Source=169.254.131.3;Initial Catalog=113_Burnasov_Biblioteka_course;User ID=Stud;Password=Qwerty123456$;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

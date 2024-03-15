@@ -21,5 +21,14 @@ namespace BibliotekaApp.Enums
             Edit,
             Delete
         }
+
+        public enum SymbolSet
+        {
+            All,
+            LetterAndSpecSymbol,
+            Letter,
+            NumberAndSpecSymbol,
+            Number
+        }
     }
 }

@@ -2,7 +2,7 @@
 using BibliotekaApp.Pages;
 
 using Microsoft.EntityFrameworkCore;
-
+using Microsoft.VisualBasic;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -71,7 +71,7 @@ namespace BibliotekaApp.UserControls
             ErrorInComboBoxLabel.Visibility = Visibility.Visible;
         }
 
-        public Parametrs(Book book, Info info, bool isDelete) : this()
+        public Parametrs(Book book, DataOfParametrPage info, bool isDelete) : this()
         {
             Parametr = info.Parametr;
             TitleParametr = info.TitleParametr;
@@ -83,6 +83,9 @@ namespace BibliotekaApp.UserControls
             if (isDelete)
             {
                 InputDataTextBox.IsReadOnly = true;
+                errorSearchTextblock.Visibility = Visibility.Collapsed;
+                ErrorInComboBoxLabel.Visibility = Visibility.Collapsed;
+                ErrorInputData.Visibility = Visibility.Collapsed;
             }
             else
             {
@@ -214,7 +217,6 @@ namespace BibliotekaApp.UserControls
 
             switch (Parametr)
             {
-
                 case "Author.FullName":
                     Value = (selectedValue as Author).FullName;
                     Book.AuthorId = (selectedValue as Author).Id;
@@ -242,12 +244,11 @@ namespace BibliotekaApp.UserControls
 
 
 
-        private void TextBox_TextChanged_2(object sender, TextChangedEventArgs e)
+        private void TextBoxInputData(object sender, TextChangedEventArgs e)
         {
             Value = (sender as TextBox).Text;
             switch (Parametr)
             {
-
                 case "Name":
                     Book.Name = Value.ToString();
                     break;
@@ -258,6 +259,22 @@ namespace BibliotekaApp.UserControls
             }
         }
 
-
+        private void InputDataTextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            switch (Parametr)
+            {
+                case "YearOfPublication":
+                    if (!new Regex(@"^\d$").IsMatch(e.Text))
+                    {
+                        ErrorInputData.Text = "Здесь разрешено писать только цифры";
+                        e.Handled = true;
+                    }
+                    else
+                    {
+                        ErrorInputData.Text = "";
+                    }
+                    return;
+            }
+        }
     }
 }

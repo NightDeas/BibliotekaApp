@@ -87,14 +87,7 @@ namespace BibliotekaApp.Pages
 
         private async void SaveBtn_Click(object sender, RoutedEventArgs e)
         {
-            Enums.Enums.OperationEntity operation = (OperationEntity)(sender as Button).Tag;
-
-            //if (IsHasErrorInInputData)
-            //{
-            //    btnSave.IsEnabled = false;
-            //    Messages.Message(MessageProgressTextBlock, "Невозможно сохранить данные, т.к обнаружены ошибки", Enums.Enums.StatusMessage.Bad);
-            //    return;
-            //}
+            OperationEntity operation = (OperationEntity)(sender as Button).Tag;
 
             switch (operation)
             {
@@ -196,73 +189,51 @@ namespace BibliotekaApp.Pages
                     break;
             }
             listParametrsStackPanel.Children.Clear();
-            Info info = new Info();
+            DataOfParametrPage info = new DataOfParametrPage();
             var keyValuePairs = App.list.FirstOrDefault(x => x.Key == key);
             foreach (var item in keyValuePairs.Value)
             {
 
                 info.Parametr = item.Key;
                 info.TitleParametr = item.Value;
-                if (operation == OperationEntity.Edit || operation == OperationEntity.Delete)
-                {
+                
                     switch (item.Key)
                     {
                         case "Name":
-                            info.Value = Book.Name ?? "";
+                            info.Value = operation == OperationEntity.Add ? "" : Book.Name;
                             info.IsHasComboBox = operation == OperationEntity.Delete ? false : false;
                             break;
                         case "Author.FullName":
-                            info.Value = Book.Author.FullName ?? "";
+                            info.Value = operation == OperationEntity.Add ? "" : Book.Author.FullName;
+                        if (operation == OperationEntity.Add)
+                        {
+                            info.Value = "";
+
+                        }
+                        else
+                        {
                             info.IsHasComboBox = operation == OperationEntity.Delete ? false : true;
                             info.Hint = "Введите ФИО автора для поиска в БД";
+                        }
                             break;
                         case "Publisher.Name":
-                            info.Value = Book.Publisher.Name ?? "";
+                            info.Value = operation == OperationEntity.Add ? "" : Book.Publisher.Name;
                             info.IsHasComboBox = operation == OperationEntity.Delete ? false : true;
                             info.Hint = "Введите название издательства для поиска в БД";
                             break;
                         case "Genre.Name":
-                            info.Value = Book.Genre.Name ?? "";
+                            info.Value = operation == OperationEntity.Add ? "" : Book.Genre.Name;
                             info.IsHasComboBox = operation == OperationEntity.Delete ? false : true;
                             info.Hint = "Введите жанр для поиска в БД";
                             break;
                         case "YearOfPublication":
-                            info.Value = Book.YearOfPublication.ToString() ?? "";
+                            info.Value = operation == OperationEntity.Add ? "" : Book.YearOfPublication.ToString();
                             info.IsHasComboBox = operation == OperationEntity.Delete ? false : false;
                             break;
                         default:
                             Trace.WriteLine($"Не найден параметр в словаре: {item.Key}");
-                            continue;
+                            continue;   
                     }
-                 
-                }
-                else
-                {
-                    switch (item.Key)
-                    {
-                        case "Name":
-                            info.IsHasComboBox = false;
-                            break;
-                        case "Author.FullName":
-                            info.IsHasComboBox = true;
-                            info.Hint = "Введите ФИО автора для поиска в БД";
-                            break;
-                        case "Publisher.Name":
-                            info.IsHasComboBox = true;
-                            info.Hint = "Введите название издательства для поиска в БД";
-                            break;
-                        case "Genre.Name":
-                            info.IsHasComboBox = true;
-                            info.Hint = "Введите жанр для поиска в БД";
-                            break;
-                        case "YearOfPublication":
-                            info.IsHasComboBox = false;
-                            break;
-                        default:
-                            Trace.WriteLine($"Не найден параметр в словаре: {item.Key}");
-                            continue;
-                    }
-                }
                 if (string.IsNullOrEmpty(info.Parametr))
                     return;
                 bool isDelete = operation == OperationEntity.Delete ? true : false;
