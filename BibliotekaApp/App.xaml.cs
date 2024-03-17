@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -19,17 +20,19 @@ namespace BibliotekaApp
         public static Frame Frame { get; set; }
         public static Dictionary<string, Dictionary<string, string>> list = new Dictionary<string, Dictionary<string, string>>()
         {
-            {"Book", new Dictionary<string, string>()
+            {"Book", new Dictionary<PropertyInfo, string>()
                 {
-                    { "Name", "Название"},
-                    { "Author.FullName", "ФИО автора"},
-                    { "Publisher.Name", "Издатель"},
+                    { new typeof(), "Название"},
+                    { "Author.FullName", "ФИО автора"}, // ?
+                    { "Publisher.Name", "Издатель"}, // ?
                     { "YearOfPublication", "Год издания"},
-                    { "Genre.Name", "Жанр"},
+                    { "Genre.Name", "Жанр"}, // ?
                 }
             }
         };
         public static DbContextBiblioteka Context = new DbContextBiblioteka();
+        public static Type type = new Book().GetType();
+        public static PropertyInfo[] infos =  type.GetProperties();
 
       
 

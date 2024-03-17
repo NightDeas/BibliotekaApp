@@ -237,7 +237,9 @@ namespace BibliotekaApp.Pages
                 if (string.IsNullOrEmpty(info.Parametr))
                     return;
                 bool isDelete = operation == OperationEntity.Delete ? true : false;
-                listParametrsStackPanel.Children.Add(new UserControls.Parametrs(Book, info, isDelete));
+                SetDataOfentity.SetData(Book, item.Key, "123213");
+                SearchEntityInBD.SearchAllDataOneType(Book.GetType());
+                //listParametrsStackPanel.Children.Add(new UserControls.Parametrs(Book, info, isDelete));
             }
             btnSave.Visibility = Visibility.Visible;
             btnCancel.Visibility = Visibility.Visible;

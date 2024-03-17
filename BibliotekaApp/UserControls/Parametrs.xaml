@@ -11,6 +11,8 @@
         <TextBlock MaxWidth="350" Text="{Binding TitleParametr}" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="22"></TextBlock>
         <TextBox x:Name="InputDataTextBox" Padding="10,5" TextWrapping="Wrap" Margin="10,5" Text="{Binding Value, Mode=TwoWay}" VerticalAlignment="Center" MaxWidth="350" FontSize="22" TextChanged="TextBoxInputData" PreviewTextInput="InputDataTextBox_PreviewTextInput"></TextBox>
         <TextBlock x:Name="ErrorInputData" Foreground="Red" Padding="10,5" TextWrapping="Wrap" Margin="10,5" VerticalAlignment="Center" FontSize="22"></TextBlock>
+        <Expander>
+            
         <Grid x:Name="gridCb">
             <StackPanel Orientation="Vertical">
                 <Grid Height="30">
@@ -25,5 +27,6 @@
                 </Grid>
             </StackPanel>
         </Grid>
+        </Expander>
     </StackPanel>
 </UserControl>

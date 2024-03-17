@@ -91,8 +91,6 @@ namespace BibliotekaApp.UserControls
             {
                 InputDataTextBox.IsReadOnly = isHasComboBox ? true : false;
             }
-
-
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;
