@@ -13,21 +13,16 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace BibliotekaApp.Pages
+namespace BibliotekaApp.UserControls
 {
     /// <summary>
-    /// Логика взаимодействия для NavigationPage.xaml
+    /// Логика взаимодействия для BookControl.xaml
     /// </summary>
-    public partial class NavigationPage : Page
+    public partial class BookControl : UserControl
     {
-        public NavigationPage()
+        public BookControl()
         {
             InitializeComponent();
-        }
-
-        private void btnBooks_Click(object sender, RoutedEventArgs e)
-        {
-            App.Frame.Navigate(new Pages.BookPage());
         }
     }
 }

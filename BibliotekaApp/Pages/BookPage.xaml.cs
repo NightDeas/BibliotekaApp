@@ -16,18 +16,13 @@ using System.Windows.Shapes;
 namespace BibliotekaApp.Pages
 {
     /// <summary>
-    /// Логика взаимодействия для NavigationPage.xaml
+    /// Логика взаимодействия для BookPage.xaml
     /// </summary>
-    public partial class NavigationPage : Page
+    public partial class BookPage : Page
     {
-        public NavigationPage()
+        public BookPage()
         {
             InitializeComponent();
-        }
-
-        private void btnBooks_Click(object sender, RoutedEventArgs e)
-        {
-            App.Frame.Navigate(new Pages.BookPage());
         }
     }
 }

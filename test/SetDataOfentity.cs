@@ -7,13 +7,11 @@ using System.Net.WebSockets;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Controls;
-using BibliotekaApp.Entites;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
-using Microsoft.Windows.Themes;
+using test.Entities;
 
-namespace BibliotekaApp
+namespace test
 {
     internal static class SetDataOfentity
     {
@@ -45,7 +43,7 @@ namespace BibliotekaApp
             {
                 case "Book":
                     Book book = (Book)Entity;
-                    App.Context.Entry(book).Property($"{propertyInfo.Name}").CurrentValue = Value;
+                    new DBContext().Entry(book).Property($"{propertyInfo.Name}").CurrentValue = Value;
                     return book;
             }
             return null;
