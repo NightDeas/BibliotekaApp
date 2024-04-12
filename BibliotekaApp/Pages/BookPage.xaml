@@ -23,12 +23,7 @@
                 <ColumnDefinition Width="75"/>
             </Grid.ColumnDefinitions>
             <ScrollViewer>
-                <WrapPanel Grid.Row="0" Orientation="Horizontal">
-                    <controls:BookControl></controls:BookControl>
-                    <controls:BookControl></controls:BookControl>
-                    <controls:BookControl></controls:BookControl>
-                    <controls:BookControl></controls:BookControl>
-                    <controls:BookControl></controls:BookControl>
+                <WrapPanel x:Name="listBookWrapPanel" Grid.Row="0" Orientation="Horizontal">
                 </WrapPanel>
             </ScrollViewer>
         </Grid>

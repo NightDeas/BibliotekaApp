@@ -23,6 +23,11 @@ namespace BibliotekaApp.Pages
         public BookPage()
         {
             InitializeComponent();
+            listBookWrapPanel.Children.Add(new UserControls.BookControl("1", "2", ""));
+            listBookWrapPanel.Children.Add(new UserControls.BookControl("1", "2", ""));
+            listBookWrapPanel.Children.Add(new UserControls.BookControl("1", "2", ""));
+            listBookWrapPanel.Children.Add(new UserControls.BookControl("1", "2", ""));
+            listBookWrapPanel.Children.Add(new UserControls.BookControl("1", "2", ""));
         }
     }
 }
